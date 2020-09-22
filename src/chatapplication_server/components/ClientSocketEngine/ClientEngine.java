@@ -85,6 +85,7 @@ public class ClientEngine extends GenericThreadedComponent
         try
         {
             socket = new Socket( configManager.getValue( "Server.Address" ), configManager.getValueInt( "Server.PortNumber" ) );
+
         }
         catch ( Exception e )
         {
