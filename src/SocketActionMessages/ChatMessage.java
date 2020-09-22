@@ -12,7 +12,7 @@ import java.io.Serializable;
  * Clients and the Server.
  * When talking from a Java Client to a Java Server a lot easier to pass Java objects, no
  * need to count bytes or to wait for a line feed at the end of the frame
- * 
+ * test
  * @author atgianne
  */
 public class ChatMessage implements Serializable 
