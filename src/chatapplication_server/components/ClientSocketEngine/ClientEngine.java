@@ -37,7 +37,9 @@ public class ClientEngine extends GenericThreadedComponent
     
     /** The Socket connection to the Chat Application Server */
     private Socket socket;
-    
+
+    /*perons shit*/
+    private  Person person;
     /** Socket Stream reader/writer that will be used throughout the whole connection... */
     private ObjectOutputStream socketWriter;
     private ObjectInputStream socketReader;
@@ -52,6 +54,7 @@ public class ClientEngine extends GenericThreadedComponent
      */
     public ClientEngine() {
         isRunning = false;
+        person =new Person();
     }
     
     /**
@@ -75,17 +78,18 @@ public class ClientEngine extends GenericThreadedComponent
      */
     public void initialize() throws ComponentInitException
     {
+        System.out.println("Messi initialize Client engine");
         /** Get the running instance of the Configuration Manager component */
         configManager = ConfigManager.getInstance();
                 
         /** For printing the configuration properties of the secure socket server */
         lotusStat = new ServerStatistics();
+        person.generateKeys();
         
         /** Try and connect to the server... */
         try
         {
             socket = new Socket( configManager.getValue( "Server.Address" ), configManager.getValueInt( "Server.PortNumber" ) );
-
         }
         catch ( Exception e )
         {
@@ -117,6 +121,10 @@ public class ClientEngine extends GenericThreadedComponent
         try
         {
             socketWriter.writeObject( configManager.getValue( "Client.Username" ) );
+            System.out.println("person.getPublicKey(): "+person.getPublicKey().toString());
+
+            sendMessage(new ChatMessage(ChatMessage.PUBLICKEY,  person.getPublicKey().toString()));
+
         }
         catch ( IOException ioe )
         {
@@ -138,7 +146,7 @@ public class ClientEngine extends GenericThreadedComponent
         ClientSocketGUI.getInstance().append( msg );
     }
     
-    /**
+    /** Shit here
      * Method for sending a message to the server
      * 
      * @param msg The message to be sent
@@ -176,6 +184,9 @@ public class ClientEngine extends GenericThreadedComponent
             // read message from user
             //String msg = scan.nextLine();
             String msg = ClientSocketGUI.getInstance().getPublicMsgToBeSent();
+            System.out.println("Messi Client engine");
+            System.out.println("New message "+ msg);
+
             if ( msg.equals( "" ) )
                 continue;
                 

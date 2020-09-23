@@ -318,8 +318,11 @@ public class SocketConnectionHandler implements Runnable
             try
             {  
                 /** Wait until there is something in the stream to be read... */
+
+
+
                 cm = ( ChatMessage )socketReader.readObject();
-                
+                System.out.println("cm"+cm.getMessage() +" - "+cm.getType());
                 String message = cm.getMessage();
                 
                 // Switch on the type of message receive
@@ -348,7 +351,11 @@ public class SocketConnectionHandler implements Runnable
 
                     System.out.println("At Server :  " +PortNo +temp[1]);
                     SocketServerEngine.getInstance().writeMsgSpecificClient(PortNo, Chat);
-                    break;              
+                    break;
+                    case ChatMessage.PUBLICKEY:
+
+                        System.out.println("in case PUBLICKEY!!!! "+message);
+                        break;
 		}
                 
             }

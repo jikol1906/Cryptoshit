@@ -52,8 +52,10 @@ public class ChatApplicationServerEngine
      */
     public void startUpCAServer()
     {
-       System.out.println( "[ChatApplicationServer_Engine]: Booting up..." );
-        
+
+        System.out.println( "Messi [ChatApplicationServer_Engine]: Booting up..." );
+        System.out.println( "MEssi - startUpCAServer" );
+
         /** Fetch the ComponentManager running instance */
         ComponentManager cm = ComponentManager.getInstance();
         
@@ -82,8 +84,9 @@ public class ChatApplicationServerEngine
      */
     public void startUpCAClient()
     {
-       System.out.println( "[ChatApplicationClient_Engine]: Booting up..." );
-        
+       System.out.println( " Messi [ChatApplicationClient_Engine]: Booting up..." );
+        System.out.println( "MEssi - startUpCAClient" );
+
         /** Fetch the ComponentManager running instance */
         ComponentManager cm = ComponentManager.getInstance();
         

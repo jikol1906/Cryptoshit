@@ -6,6 +6,7 @@
 package chatapplication_server.components.ServerSocketEngine;
 
 import chatapplication_server.ComponentManager;
+import chatapplication_server.components.ClientSocketEngine.Person;
 import chatapplication_server.components.ConfigManager;
 import chatapplication_server.components.base.GenericThreadedComponent;
 import chatapplication_server.exception.ComponentInitException;
@@ -22,8 +23,11 @@ import java.text.SimpleDateFormat;
  *
  * @author atgianne
  */
+
 public class SocketServerEngine extends GenericThreadedComponent
 {
+
+    ArrayList<Client> connectedClient = new ArrayList<Client>();
     /** Instance of the ConfigManager component */
     ConfigManager configManager;
     
@@ -110,7 +114,7 @@ public class SocketServerEngine extends GenericThreadedComponent
      *
      * Also, it starts the socket server.
      * 
-     * @see IComponent interface.
+     * @see  interface.
      */
     public void initialize() throws ComponentInitException
     {
@@ -230,6 +234,15 @@ public class SocketServerEngine extends GenericThreadedComponent
      */
     public void addConnectionHandlerToPool( String handlerName )
     {
+                    System.out.println("in addConnectionHandlerToPool shit: "+handlerName);
+
+
+        if(handlerName.contains("PK")){
+            System.out.println("in if PK shit");
+
+
+
+        }
         /** Create a new Connection Handler... */
         SocketConnectionHandler handler = new SocketConnectionHandler();
 
@@ -318,6 +331,8 @@ public class SocketServerEngine extends GenericThreadedComponent
     
     public void writeMsgSpecificClient( int PortNo, String msg )
     {
+        System.out.println("Messi.writeMsgSpecificClient"+msg);
+
         /** Vector that will temporarily hold a clone of the occupance pool... */
         Vector occupance = new Vector();
 
@@ -346,7 +361,7 @@ public class SocketServerEngine extends GenericThreadedComponent
         }
     }
     
-    /**
+    /** shit here
      * Method for broadcasting an event/message to all connected clients
      * 
      * @param message The message to be broadcasted
