@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
   <artifact type="jar" name="Cryptoshit:jar">
-    <output-path>$PROJECT_DIR$/dist</output-path>
+    <output-path>$PROJECT_DIR$/dist/artifacts/Cryptoshit_jar</output-path>
     <root id="archive" name="Cryptoshit.jar">
       <element id="module-output" name="Cryptoshit" />
     </root>
