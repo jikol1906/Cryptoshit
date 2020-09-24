@@ -55,7 +55,7 @@ public class DHKey {
 
             // You can use Blowfish or another symmetric algorithm but you must adjust the key size.
             final SecretKeySpec keySpec = new SecretKeySpec(secretKey, "DES");
-            final Cipher        cipher  = Cipher.getInstance("DES/ECB/PKCS5Padding");
+            final Cipher     cipher  = Cipher.getInstance("DES/ECB/PKCS5Padding");
 
             cipher.init(Cipher.ENCRYPT_MODE, keySpec);
 

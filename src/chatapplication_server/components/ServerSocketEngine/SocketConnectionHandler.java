@@ -323,7 +323,7 @@ public class SocketConnectionHandler implements Runnable
 
 
 //converting it back to public key
-            KeyFactory factory = KeyFactory.getInstance("DESede");
+            KeyFactory factory = KeyFactory.getInstance("DH");
            PublicKey public_key = (PublicKey) factory.generatePublic(new X509EncodedKeySpec(byte_pubkey));
             System.out.println("stringToPublicKey. !!!! FINAL OUTPUT" + public_key);
             return public_key;
