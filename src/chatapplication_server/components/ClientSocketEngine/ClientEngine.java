@@ -121,7 +121,7 @@ public class ClientEngine extends GenericThreadedComponent
             socketWriter.writeObject( configManager.getValue( "Client.Username" ) );
             System.out.println("person.getPublicKey(): "+person.getPublicKey().toString());
 
-            sendMessage(new ChatMessage(ChatMessage.PUBLICKEY,  person.getPublicKey().toString()));
+            sendMessage(new ChatMessage(ChatMessage.PUBLICKEY,  person.getPublicKeyString()));
 
         }
         catch ( IOException ioe )

@@ -16,6 +16,7 @@ import java.io.StreamCorruptedException;
 import javax.net.ssl.SSLSocket;
 import java.net.*;
 import java.security.PublicKey;
+import java.security.interfaces.ECPublicKey;
 import java.util.Base64;
 import java.util.Vector;
 
@@ -316,12 +317,28 @@ public class SocketConnectionHandler implements Runnable
 
     private PublicKey stringToPublicKey(String s){
         try{
+//converting string to Bytes
+            byte[]  byte_pubkey  = Base64.getDecoder().decode(s);
+            System.out.println("BYTE KEY::" + byte_pubkey);
+
+
+//converting it back to public key
+            KeyFactory factory = KeyFactory.getInstance("DESede");
+           PublicKey public_key = (PublicKey) factory.generatePublic(new X509EncodedKeySpec(byte_pubkey));
+            System.out.println("stringToPublicKey. !!!! FINAL OUTPUT" + public_key);
+            return public_key;
+
+            /*
+
+
+
+
             System.out.println("stringToPublicKey s = "+s);
         X509EncodedKeySpec pubKeySpec = new X509EncodedKeySpec(Base64.getDecoder().decode(s));
         KeyFactory keyFactory =KeyFactory.getInstance(
                 "RSA", "SUN");
         PublicKey publicKey = keyFactory.generatePublic(pubKeySpec);
-        return  publicKey;
+        return  publicKey;*/
         }catch (Exception e) {
             e.printStackTrace();
             return  null;

@@ -7,7 +7,7 @@ import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.PrivateKey;
 import java.security.PublicKey;
-
+import java.util.Base64;
 
 
 public class DHKey {
@@ -202,5 +202,14 @@ public class DHKey {
         }
 
         return null;
+    }
+
+ public  String getPublicKeyString(){
+     byte[] byte_pubkey = publicKey.getEncoded();
+     String str_key = Base64.getEncoder().encodeToString(byte_pubkey);
+     System.out.println("\nSTRING KEY::" + str_key);
+
+        return str_key;
+
     }
 }
