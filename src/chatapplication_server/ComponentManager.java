@@ -62,7 +62,7 @@ public class ComponentManager
      * Start the given list of components.
      *
      * @param componentNames A list containing the names of the components to be started
-     * @retun FALSE on error; TRUE otherwise
+
      */
     public boolean startComponentsList( LinkedList componentNames )
     {
@@ -118,8 +118,6 @@ public class ComponentManager
     /** 
      * Start the component corresponding to the given name.
      *
-     * @param componentNames String name of the component to be started
-     * @retun FALSE on error; TRUE otherwise
      */
     public boolean startComponent( String componentName )
     {

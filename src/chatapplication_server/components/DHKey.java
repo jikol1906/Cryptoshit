@@ -153,7 +153,6 @@ public class DHKey {
     /**
      * In a real life example you must serialize the public key for transferring.
      *
-     * @param
      */
     public void receivePublicKeyFromString(final PublicKey pk) {
 
