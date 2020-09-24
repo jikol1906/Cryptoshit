@@ -77,9 +77,79 @@ public class SocketServerEngine extends GenericThreadedComponent
         newDHKey.generateKeys();
         newDHKey.receivePublicKeyFromString(pubKey);
         newDHKey.generateCommonSecretKey();
-        System.out.println("newDHKey.getSecretKey()"+newDHKey.getSecretKey());
+        String publicKeyString = newDHKey.getPublicKeyString();
+        System.out.println("!newDHKey.getSecretKey()"+newDHKey.getSecretKey());
         dhKeys.put(username, newDHKey);
 
+        /**Send server public key to client*/
+        System.out.println("in sendPublicKeyToClient");
+
+        Vector occupance = new Vector();
+
+        /** Take a clone of the occupance pool in order not to block it for a long period of time and loose any new incomaing connections */
+        synchronized ( connHandlerOccp )
+        {
+            occupance = connHandlerOccp;
+        }
+        System.out.println("\n occupance.size() "+ occupance.size() );
+
+        /** If there is no established connection...print it to the logging stream */
+        if ( occupance.size() == 0 )
+        {
+            SocketServerGUI.getInstance().appendEvent("[SSEngine]:: There aren't any established client connections to the CA server (" + lotusStat.getCurrentDate() + ")\n" );
+            return;
+        }
+
+        /** Then, for each connection handler that is occupied..print some information */
+        for ( int i = 0; i < occupance.size(); i++ )
+        {
+            System.out.println("in sendPublicKeyToClient");
+
+            /** Get a Connection Handler reference... */
+            SocketConnectionHandler sch = ( SocketConnectionHandler )occupance.get( i );
+            if(sch.getUserName().equals(  username )){
+                sch.writeMsg( "&PUBLICKEY&"+publicKeyString );
+            }
+
+
+        }
+
+
+
+    }
+
+    public void sendPublicKeyToClient(String username , String publicKey){
+        System.out.println("in sendPublicKeyToClient");
+
+        Vector occupance = new Vector();
+
+        /** Take a clone of the occupance pool in order not to block it for a long period of time and loose any new incomaing connections */
+        synchronized ( connHandlerOccp )
+        {
+            occupance = connHandlerOccp;
+        }
+
+        /** If there is no established connection...print it to the logging stream */
+        if ( occupance.size() == 0 )
+        {
+            SocketServerGUI.getInstance().appendEvent("[SSEngine]:: There aren't any established client connections to the CA server (" + lotusStat.getCurrentDate() + ")\n" );
+            return;
+        }
+
+        /** Then, for each connection handler that is occupied..print some information */
+        for ( int i = 0; i < occupance.size(); i++ )
+        {
+            System.out.println("in sendPublicKeyToClient");
+
+            /** Get a Connection Handler reference... */
+            SocketConnectionHandler sch = ( SocketConnectionHandler )occupance.get( i );
+            if(sch.getUserName().equals(  username )){
+                System.out.println("sendPublicKeyToClient -  sch.getUserName().equals(  username ): "+username);
+                sch.writeMsg( "&PUBLICKEY&"+publicKey );
+            }
+
+
+        }
 
 
 

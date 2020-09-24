@@ -7,21 +7,20 @@ import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.util.Arrays;
 import java.util.Base64;
 
 
 public class DHKey {
 
 
-
-    //~ --- [INSTANCE FIELDS] ------------------------------------------------------------------------------------------
+//~ --- [INSTANCE FIELDS] ------------------------------------------------------------------------------------------
 
     private PrivateKey privateKey;
-    private PublicKey  publicKey;
-    private PublicKey  receivedPublicKey;
-    private byte[]     secretKey;
-    private String     secretMessage;
-
+    private PublicKey publicKey;
+    private PublicKey receivedPublicKey;
+    private byte[] secretKey;
+    private String secretMessage;
 
 
     //~ --- [METHODS] --------------------------------------------------------------------------------------------------
@@ -32,7 +31,7 @@ public class DHKey {
 
             // You can use Blowfish or another symmetric algorithm but you must adjust the key size.
             final SecretKeySpec keySpec = new SecretKeySpec(secretKey, "DES");
-            final Cipher        cipher  = Cipher.getInstance("DES/ECB/PKCS5Padding");
+            final Cipher cipher = Cipher.getInstance("DES/ECB/PKCS5Padding");
 
             cipher.init(Cipher.ENCRYPT_MODE, keySpec);
 
@@ -49,35 +48,61 @@ public class DHKey {
     }
 
     public String encryptMessage(String message) {
-        System.out.println("encryptMessage.message"+message);
-        System.out.println("encryptMessage.secretKey"+secretKey);
+        System.out.println("encryptMessage.message" + message);
+        System.out.println("encryptMessage.secretKey" + secretKey);
         try {
 
             // You can use Blowfish or another symmetric algorithm but you must adjust the key size.
             final SecretKeySpec keySpec = new SecretKeySpec(secretKey, "DES");
-            final Cipher     cipher  = Cipher.getInstance("DES/ECB/PKCS5Padding");
+            final Cipher cipher = Cipher.getInstance("DES/ECB/PKCS5Padding");
 
             cipher.init(Cipher.ENCRYPT_MODE, keySpec);
 
             final byte[] encryptedMessage = cipher.doFinal(message.getBytes());
 
 
-            System.out.println("encryptMessage.encrypted message!!! "+encryptedMessage.toString() );
+            System.out.println("encryptMessage.encrypted message!!! " + encryptedMessage.toString());
             return encryptedMessage.toString();
 
         } catch (Exception e) {
 
             e.printStackTrace();
-            return  null;
+            return null;
         }
     }
+
+    public String decryptMessage(String message) {
+        String decryptedMEssage;
+
+        final byte[] msgByte = message.getBytes();
+
+        try {
+            System.out.println("\n\n in decrypt message!!!" + message);
+
+            System.out.println(" in decrypt msgByte!!!" + msgByte);
+
+            // You can use Blowfish or another symmetric algorithm but you must adjust the key size.
+            final SecretKeySpec keySpec = new SecretKeySpec(secretKey, "DES");
+            final Cipher cipher = Cipher.getInstance("DES/ECB/PKCS5Padding");
+
+            cipher.init(Cipher.DECRYPT_MODE, keySpec);
+
+            decryptedMEssage = new String(cipher.doFinal(msgByte));
+            return decryptedMEssage;
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            return null;
+        }
+    }
+
 
     //~ ----------------------------------------------------------------------------------------------------------------
 
     public void generateCommonSecretKey() {
 
         try {
-            System.out.println("generateCommonSecretKey.receivedPublicKey"+receivedPublicKey);
+            System.out.println("generateCommonSecretKey.receivedPublicKey" + receivedPublicKey);
             final KeyAgreement keyAgreement = KeyAgreement.getInstance("DH");
             keyAgreement.init(privateKey);
             keyAgreement.doPhase(receivedPublicKey, true);
@@ -87,7 +112,6 @@ public class DHKey {
             e.printStackTrace();
         }
     }
-
 
 
     //~ ----------------------------------------------------------------------------------------------------------------
@@ -101,12 +125,11 @@ public class DHKey {
             final KeyPair keyPair = keyPairGenerator.generateKeyPair();
 
             privateKey = keyPair.getPrivate();
-            publicKey  = keyPair.getPublic();
+            publicKey = keyPair.getPublic();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
 
 
     //~ ----------------------------------------------------------------------------------------------------------------
@@ -117,7 +140,6 @@ public class DHKey {
     }
 
 
-
     //~ ----------------------------------------------------------------------------------------------------------------
 
     public void receiveAndDecryptMessage(final byte[] message) {
@@ -126,7 +148,7 @@ public class DHKey {
 
             // You can use Blowfish or another symmetric algorithm but you must adjust the key size.
             final SecretKeySpec keySpec = new SecretKeySpec(secretKey, "DES");
-            final Cipher        cipher  = Cipher.getInstance("DES/ECB/PKCS5Padding");
+            final Cipher cipher = Cipher.getInstance("DES/ECB/PKCS5Padding");
 
             cipher.init(Cipher.DECRYPT_MODE, keySpec);
 
@@ -137,13 +159,12 @@ public class DHKey {
     }
 
 
-
     //~ ----------------------------------------------------------------------------------------------------------------
 
     /**
      * In a real life example you must serialize the public key for transferring.
      *
-     * @param  person
+     * @param person
      */
     public void receivePublicKeyFrom(final DHKey person) {
 
@@ -161,7 +182,6 @@ public class DHKey {
     }
 
 
-
     //~ ----------------------------------------------------------------------------------------------------------------
 
     public void whisperTheSecretMessage() {
@@ -170,15 +190,13 @@ public class DHKey {
     }
 
 
-
     //~ ----------------------------------------------------------------------------------------------------------------
 
     /**
      * 1024 bit symmetric key size is so big for DES so we must shorten the key size. You can get first 8 longKey of the
      * byte array or can use a key factory
      *
-     * @param   longKey
-     *
+     * @param longKey
      * @return
      */
     private byte[] shortenSecretKey(final byte[] longKey) {
@@ -204,12 +222,23 @@ public class DHKey {
         return null;
     }
 
- public  String getPublicKeyString(){
-     byte[] byte_pubkey = publicKey.getEncoded();
-     String str_key = Base64.getEncoder().encodeToString(byte_pubkey);
-     System.out.println("\nSTRING KEY::" + str_key);
+    public String getPublicKeyString() {
+        byte[] byte_pubkey = publicKey.getEncoded();
+        String str_key = Base64.getEncoder().encodeToString(byte_pubkey);
+        System.out.println("\nSTRING KEY::" + str_key);
 
         return str_key;
 
+    }
+
+    @Override
+    public String toString() {
+        return "DHKey{" +
+                "privateKey=" + privateKey +
+                ", publicKey=" + publicKey +
+                ", receivedPublicKey=" + receivedPublicKey +
+                ", secretKey=" + Arrays.toString(secretKey) +
+                ", secretMessage='" + secretMessage + '\'' +
+                '}';
     }
 }
