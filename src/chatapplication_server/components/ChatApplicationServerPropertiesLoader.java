@@ -97,7 +97,6 @@ public class ChatApplicationServerPropertiesLoader implements IComponent
      * If the value is not "null", it is passed to the Configuration Manager component in order to be accessible
      * from all other components; otherwise a false statement is returned.
      *
-     * @param configID The name of the configuration property to be set
      * @param loadedProp String representation of the loaded property to be checked
      *
      * @return TRUE if the value is not "null"; FALSE otherwise

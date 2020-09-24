@@ -76,7 +76,6 @@ public class ClientEngine extends GenericThreadedComponent
      * This method is called upon initialize of the ClientEngine component and handles any configuration that needs to be
      * done in the client before it connects to the Chat Application Server.
      * 
-     * @see IComponent interface.
      */
     public void initialize() throws ComponentInitException
     {

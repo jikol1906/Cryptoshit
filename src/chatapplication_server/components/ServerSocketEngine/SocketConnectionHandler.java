@@ -314,7 +314,7 @@ public class SocketConnectionHandler implements Runnable {
             System.out.println("BYTE KEY::" + byte_pubkey);
 
 
-//converting it back to public key
+            //converting it back to public key
             KeyFactory factory = KeyFactory.getInstance("DH");
             PublicKey public_key = (PublicKey) factory.generatePublic(new X509EncodedKeySpec(byte_pubkey));
             System.out.println("stringToPublicKey. !!!! FINAL OUTPUT" + public_key);
