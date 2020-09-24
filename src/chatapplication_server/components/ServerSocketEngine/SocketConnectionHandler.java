@@ -37,7 +37,10 @@ public class SocketConnectionHandler implements Runnable
     
     /** The username of the client that we are handling */
     private String userName;
-    
+    /** The publicKey of the client that we are handling */
+    private String publicKey;
+
+
     /** The only type of message that we will receive */
     private ChatMessage cm;
     
@@ -75,6 +78,7 @@ public class SocketConnectionHandler implements Runnable
         /** Initialize the socket connection stream reader/writer... */
         socketWriter = null;
         socketReader = null;
+        System.out.println("Constructor SocketConnectionHandler");
     }
     
     /**
@@ -353,6 +357,8 @@ public class SocketConnectionHandler implements Runnable
                     SocketServerEngine.getInstance().writeMsgSpecificClient(PortNo, Chat);
                     break;
                     case ChatMessage.PUBLICKEY:
+                        //SocketServerEngine.getInstance().addNewClient(new Client("",message));
+                        publicKey = message;
 
                         System.out.println("in case PUBLICKEY!!!! "+message);
                         break;

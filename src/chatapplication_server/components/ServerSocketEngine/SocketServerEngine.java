@@ -42,7 +42,8 @@ public class SocketServerEngine extends GenericThreadedComponent
 
     /** Vector holding the references to the connection handlers that are occupied by an established connection */
     Vector connHandlerOccp;
-    
+
+
      /**
      * Singleton instance of the SocketServerEngine component
      */
@@ -69,7 +70,13 @@ public class SocketServerEngine extends GenericThreadedComponent
         
         return componentInstance;
     }
-    
+
+    public void addNewClient( Client c)
+    {
+        connectedClient.add(c);
+    }
+
+
     /**
      * Method for printing some information about the established (if any) socket connections to the CA socket server.
      * Actually, it checks the occupance pool to see how many connection handlers are assigned to sockets and then
