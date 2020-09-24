@@ -356,8 +356,7 @@ public class SocketConnectionHandler implements Runnable
                     case ChatMessage.PUBLICKEY:
                         //SocketServerEngine.getInstance().addNewClient(new Client("",message));
                         publicKey = message;
-                        SocketServerEngine.serverKey.receivePublicKeyFrom(publicKey);
-                        SocketServerEngine.serverKey.receivePublicKeyFrom(publicKey2);
+                        SocketServerEngine.serverKey.get(0).receivePublicKeyFrom(publicKey);
 
                         System.out.println("in case PUBLICKEY!!!! "+message);
                         break;

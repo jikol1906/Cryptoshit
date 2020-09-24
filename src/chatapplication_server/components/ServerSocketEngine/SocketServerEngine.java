@@ -41,7 +41,7 @@ public class SocketServerEngine extends GenericThreadedComponent
     Vector connHandlerOccp;
 
     /** DH key */
-    static DHKey serverKey;
+    static ArrayList<DHKey> serverKey;
 
 
     /**
