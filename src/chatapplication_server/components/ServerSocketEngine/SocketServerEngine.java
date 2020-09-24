@@ -12,6 +12,7 @@ import chatapplication_server.components.base.GenericThreadedComponent;
 import chatapplication_server.exception.ComponentInitException;
 import chatapplication_server.statistics.ServerStatistics;
 import java.net.ServerSocket;
+import java.security.PublicKey;
 import java.util.*;
 import java.net.*;
 import java.text.SimpleDateFormat;
@@ -24,7 +25,7 @@ import java.text.SimpleDateFormat;
 public class SocketServerEngine extends GenericThreadedComponent
 {
 
-    ArrayList<Client> connectedClient = new ArrayList<Client>();
+    Map<String,DHKey> dhKeys = new HashMap<>();
     /** Instance of the ConfigManager component */
     ConfigManager configManager;
     
@@ -40,8 +41,6 @@ public class SocketServerEngine extends GenericThreadedComponent
     /** Vector holding the references to the connection handlers that are occupied by an established connection */
     Vector connHandlerOccp;
 
-    /** DH key */
-    static ArrayList<DHKey> serverKey;
 
 
     /**
@@ -71,9 +70,19 @@ public class SocketServerEngine extends GenericThreadedComponent
         return componentInstance;
     }
 
-    public void addNewClient( Client c)
+    public void receivePublicKeyFrom( String username, PublicKey pubKey)
     {
-        connectedClient.add(c);
+        System.out.println("pubKey"+pubKey);
+        DHKey newDHKey = new DHKey();
+        newDHKey.generateKeys();
+        newDHKey.receivePublicKeyFromString(pubKey);
+        newDHKey.generateCommonSecretKey();
+        System.out.println("newDHKey.getSecretKey()"+newDHKey.getSecretKey());
+        dhKeys.put(username, newDHKey);
+
+
+
+
     }
 
 
@@ -139,7 +148,7 @@ public class SocketServerEngine extends GenericThreadedComponent
         configManager.setDefaultValue( "ConnectionHandlers.Number", new Integer( 6 ).toString() );
 
         /** Set server key */
-        serverKey.generateKeys();
+       // serverKey.generateKeys();
         
         /** Start the connection handlers and add them in the pool... */
         SocketServerGUI.getInstance().appendEvent("[SSEngine]:: ConnectionHandling Pool (" + configManager.getValue( "ConnectionHandlers.Number" ) + ") fired up (" + lotusStat.getCurrentDate() + ")\n" );
@@ -404,8 +413,13 @@ public class SocketServerEngine extends GenericThreadedComponent
         {
             /** Get a Connection Handler reference... */
             SocketConnectionHandler sch = ( SocketConnectionHandler )occupance.get( i );
-
-            sch.writeMsg( messageLf );
+            System.out.println("messageLf"+messageLf);
+            System.out.println("bsocketengine. 115 - dhKey : "+ dhKeys.toString());
+            DHKey dhKey = dhKeys.get(sch.getUserName());
+            System.out.println("broadcast.dhKey : "+dhKey);
+         //   String encryptedMsg =Arrays.toString( dhKey.encryptMessage(messageLf));
+            String encryptedMsg = dhKey.encryptMessage(message);//Arrays.toString( );
+            sch.writeMsg( encryptedMsg );
         }
     }
     

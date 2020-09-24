@@ -15,7 +15,12 @@ import java.io.OptionalDataException;
 import java.io.StreamCorruptedException;
 import javax.net.ssl.SSLSocket;
 import java.net.*;
+import java.security.PublicKey;
+import java.util.Base64;
 import java.util.Vector;
+
+import java.security.KeyFactory;
+import java.security.spec.X509EncodedKeySpec;
 
 /**
  *
@@ -38,7 +43,7 @@ public class SocketConnectionHandler implements Runnable
     /** The username of the client that we are handling */
     private String userName;
     /** The publicKey of the client that we are handling */
-    private String publicKey;
+    private PublicKey publicKey;
 
 
     /** The only type of message that we will receive */
@@ -308,6 +313,20 @@ public class SocketConnectionHandler implements Runnable
             }
         }
     }
+
+    private PublicKey stringToPublicKey(String s){
+        try{
+            System.out.println("stringToPublicKey s = "+s);
+        X509EncodedKeySpec pubKeySpec = new X509EncodedKeySpec(Base64.getDecoder().decode(s));
+        KeyFactory keyFactory =KeyFactory.getInstance(
+                "RSA", "SUN");
+        PublicKey publicKey = keyFactory.generatePublic(pubKeySpec);
+        return  publicKey;
+        }catch (Exception e) {
+            e.printStackTrace();
+            return  null;
+        }
+    }
     
     /**
      * Method for handling any data transmission/reception of the assigned socket connection. The SocketConnectionHandler retrieves
@@ -354,10 +373,12 @@ public class SocketConnectionHandler implements Runnable
                     SocketServerEngine.getInstance().writeMsgSpecificClient(PortNo, Chat);
                     break;
                     case ChatMessage.PUBLICKEY:
+                        System.out.println("class.getClass().getSimpleName() "+message.getClass().getSimpleName());
                         //SocketServerEngine.getInstance().addNewClient(new Client("",message));
-                        publicKey = message;
-                        SocketServerEngine.serverKey.get(0).receivePublicKeyFrom(publicKey);
-
+                        publicKey =this.stringToPublicKey(message);
+                        System.out.println();
+                        //SocketServerEngine.serverKey.get(0).receivePublicKeyFrom(publicKey);
+                        SocketServerEngine.getInstance().receivePublicKeyFrom(userName ,publicKey);
                         System.out.println("in case PUBLICKEY!!!! "+message);
                         break;
 		}

@@ -44,13 +44,40 @@ public class DHKey {
         }
     }
 
+    public byte[] getSecretKey() {
+        return secretKey;
+    }
 
+    public String encryptMessage(String message) {
+        System.out.println("encryptMessage.message"+message);
+        System.out.println("encryptMessage.secretKey"+secretKey);
+        try {
+
+            // You can use Blowfish or another symmetric algorithm but you must adjust the key size.
+            final SecretKeySpec keySpec = new SecretKeySpec(secretKey, "DES");
+            final Cipher        cipher  = Cipher.getInstance("DES/ECB/PKCS5Padding");
+
+            cipher.init(Cipher.ENCRYPT_MODE, keySpec);
+
+            final byte[] encryptedMessage = cipher.doFinal(message.getBytes());
+
+
+            System.out.println("encryptMessage.encrypted message!!! "+encryptedMessage.toString() );
+            return encryptedMessage.toString();
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+            return  null;
+        }
+    }
 
     //~ ----------------------------------------------------------------------------------------------------------------
 
     public void generateCommonSecretKey() {
 
         try {
+            System.out.println("generateCommonSecretKey.receivedPublicKey"+receivedPublicKey);
             final KeyAgreement keyAgreement = KeyAgreement.getInstance("DH");
             keyAgreement.init(privateKey);
             keyAgreement.doPhase(receivedPublicKey, true);
@@ -121,6 +148,16 @@ public class DHKey {
     public void receivePublicKeyFrom(final DHKey person) {
 
         receivedPublicKey = person.getPublicKey();
+    }
+
+    /**
+     * In a real life example you must serialize the public key for transferring.
+     *
+     * @param
+     */
+    public void receivePublicKeyFromString(final PublicKey pk) {
+
+        receivedPublicKey = pk;
     }
 
 
