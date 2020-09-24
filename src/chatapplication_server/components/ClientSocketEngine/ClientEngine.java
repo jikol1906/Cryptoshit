@@ -8,8 +8,7 @@ package chatapplication_server.components.ClientSocketEngine;
 import SocketActionMessages.ChatMessage;
 import chatapplication_server.ComponentManager;
 import chatapplication_server.components.ConfigManager;
-import chatapplication_server.components.ServerSocketEngine.SocketServerEngine;
-import chatapplication_server.components.ServerSocketEngine.SocketServerGUI;
+import chatapplication_server.components.DHKey;
 import chatapplication_server.components.base.GenericThreadedComponent;
 import chatapplication_server.exception.ComponentInitException;
 import chatapplication_server.statistics.ServerStatistics;
@@ -18,7 +17,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 import java.net.*;
-import java.util.Scanner;
 
 /**
  *
@@ -39,7 +37,7 @@ public class ClientEngine extends GenericThreadedComponent
     private Socket socket;
 
     /*perons shit*/
-    private  Person person;
+    private DHKey person;
     /** Socket Stream reader/writer that will be used throughout the whole connection... */
     private ObjectOutputStream socketWriter;
     private ObjectInputStream socketReader;
@@ -54,7 +52,7 @@ public class ClientEngine extends GenericThreadedComponent
      */
     public ClientEngine() {
         isRunning = false;
-        person =new Person();
+        person =new DHKey();
     }
     
     /**

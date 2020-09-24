@@ -6,16 +6,13 @@
 package chatapplication_server.components.ServerSocketEngine;
 
 import chatapplication_server.ComponentManager;
-import chatapplication_server.components.ClientSocketEngine.Person;
 import chatapplication_server.components.ConfigManager;
+import chatapplication_server.components.DHKey;
 import chatapplication_server.components.base.GenericThreadedComponent;
 import chatapplication_server.exception.ComponentInitException;
 import chatapplication_server.statistics.ServerStatistics;
 import java.net.ServerSocket;
-import javax.net.ssl.SSLServerSocket;
-import javax.net.ssl.SSLSocket;
 import java.util.*;
-import java.io.*;
 import java.net.*;
 import java.text.SimpleDateFormat;
 
@@ -43,8 +40,11 @@ public class SocketServerEngine extends GenericThreadedComponent
     /** Vector holding the references to the connection handlers that are occupied by an established connection */
     Vector connHandlerOccp;
 
+    /** DH key */
+    static DHKey serverKey;
 
-     /**
+
+    /**
      * Singleton instance of the SocketServerEngine component
      */
     private static SocketServerEngine componentInstance = null;
@@ -137,6 +137,9 @@ public class SocketServerEngine extends GenericThreadedComponent
         
         /** Set the default value of the number of SSLConnectionHandlers waiting in the connectionHandling pool */
         configManager.setDefaultValue( "ConnectionHandlers.Number", new Integer( 6 ).toString() );
+
+        /** Set server key */
+        serverKey.generateKeys();
         
         /** Start the connection handlers and add them in the pool... */
         SocketServerGUI.getInstance().appendEvent("[SSEngine]:: ConnectionHandling Pool (" + configManager.getValue( "ConnectionHandlers.Number" ) + ") fired up (" + lotusStat.getCurrentDate() + ")\n" );
@@ -241,15 +244,9 @@ public class SocketServerEngine extends GenericThreadedComponent
      */
     public void addConnectionHandlerToPool( String handlerName )
     {
-                    System.out.println("in addConnectionHandlerToPool shit: "+handlerName);
+        System.out.println("in addConnectionHandlerToPool shit: "+handlerName);
 
 
-        if(handlerName.contains("PK")){
-            System.out.println("in if PK shit");
-
-
-
-        }
         /** Create a new Connection Handler... */
         SocketConnectionHandler handler = new SocketConnectionHandler();
 
@@ -264,6 +261,8 @@ public class SocketServerEngine extends GenericThreadedComponent
             /** Add him in the pool... */
             connectionHandlingPool.addElement( handler );
             SocketServerGUI.getInstance().appendEvent("[SSEngine]:: " + handler.getHandlerIdentifierName() + " terminated...New reference back in the pool (" + lotusStat.getCurrentDate() + ")\n" );
+
+
         }
     }
     
@@ -406,7 +405,7 @@ public class SocketServerEngine extends GenericThreadedComponent
             /** Get a Connection Handler reference... */
             SocketConnectionHandler sch = ( SocketConnectionHandler )occupance.get( i );
 
-           sch.writeMsg( messageLf );
+            sch.writeMsg( messageLf );
         }
     }
     

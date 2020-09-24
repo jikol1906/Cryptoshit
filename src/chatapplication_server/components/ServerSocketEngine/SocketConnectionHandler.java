@@ -322,9 +322,6 @@ public class SocketConnectionHandler implements Runnable
             try
             {  
                 /** Wait until there is something in the stream to be read... */
-
-
-
                 cm = ( ChatMessage )socketReader.readObject();
                 System.out.println("cm"+cm.getMessage() +" - "+cm.getType());
                 String message = cm.getMessage();
@@ -359,6 +356,8 @@ public class SocketConnectionHandler implements Runnable
                     case ChatMessage.PUBLICKEY:
                         //SocketServerEngine.getInstance().addNewClient(new Client("",message));
                         publicKey = message;
+                        SocketServerEngine.serverKey.receivePublicKeyFrom(publicKey);
+                        SocketServerEngine.serverKey.receivePublicKeyFrom(publicKey2);
 
                         System.out.println("in case PUBLICKEY!!!! "+message);
                         break;

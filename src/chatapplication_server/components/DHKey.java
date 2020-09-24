@@ -1,4 +1,4 @@
-package chatapplication_server.components.ClientSocketEngine;
+package chatapplication_server.components;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyAgreement;
@@ -10,7 +10,7 @@ import java.security.PublicKey;
 
 
 
-public class Person {
+public class DHKey {
 
 
 
@@ -26,7 +26,7 @@ public class Person {
 
     //~ --- [METHODS] --------------------------------------------------------------------------------------------------
 
-    public void encryptAndSendMessage(final String message, final Person person) {
+    public void encryptAndSendMessage(final String message, final DHKey person) {
 
         try {
 
@@ -118,7 +118,7 @@ public class Person {
      *
      * @param  person
      */
-    public void receivePublicKeyFrom(final Person person) {
+    public void receivePublicKeyFrom(final DHKey person) {
 
         receivedPublicKey = person.getPublicKey();
     }
