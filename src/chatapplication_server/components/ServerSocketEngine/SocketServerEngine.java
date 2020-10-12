@@ -79,10 +79,6 @@ public class SocketServerEngine extends GenericThreadedComponent
         newDHKey.generateCommonSecretKey();
         System.out.println("newDHKey.getSecretKey()"+newDHKey.getSecretKey());
         dhKeys.put(username, newDHKey);
-
-
-
-
     }
 
 
