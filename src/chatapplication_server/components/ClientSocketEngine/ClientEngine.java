@@ -36,8 +36,12 @@ public class ClientEngine extends GenericThreadedComponent
     /** The Socket connection to the Chat Application Server */
     private Socket socket;
 
+    public DHKey getDhKey() {
+        return dhKey;
+    }
+
     /*perons shit*/
-    private DHKey person;
+    private DHKey dhKey;
     /** Socket Stream reader/writer that will be used throughout the whole connection... */
     private ObjectOutputStream socketWriter;
     private ObjectInputStream socketReader;
@@ -52,7 +56,7 @@ public class ClientEngine extends GenericThreadedComponent
      */
     public ClientEngine() {
         isRunning = false;
-        person =new DHKey();
+        dhKey =new DHKey();
     }
     
     /**
@@ -72,7 +76,6 @@ public class ClientEngine extends GenericThreadedComponent
      * This method is called upon initialize of the ClientEngine component and handles any configuration that needs to be
      * done in the client before it connects to the Chat Application Server.
      * 
-     * @see IComponent interface.
      */
     public void initialize() throws ComponentInitException
     {
@@ -82,7 +85,7 @@ public class ClientEngine extends GenericThreadedComponent
                 
         /** For printing the configuration properties of the secure socket server */
         lotusStat = new ServerStatistics();
-        person.generateKeys();
+        dhKey.generateKeys();
         
         /** Try and connect to the server... */
         try
@@ -119,9 +122,9 @@ public class ClientEngine extends GenericThreadedComponent
         try
         {
             socketWriter.writeObject( configManager.getValue( "Client.Username" ) );
-            System.out.println("person.getPublicKey(): "+person.getPublicKey().toString());
+            System.out.println("dhKey.getPublicKey(): "+ dhKey.getPublicKey().toString());
 
-            sendMessage(new ChatMessage(ChatMessage.PUBLICKEY,  person.getPublicKeyString()));
+            sendMessage(new ChatMessage(ChatMessage.PUBLICKEY,  dhKey.getPublicKeyString()));
 
         }
         catch ( IOException ioe )

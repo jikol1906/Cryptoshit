@@ -309,7 +309,7 @@ public class SocketConnectionHandler implements Runnable {
 
     private PublicKey stringToPublicKey(String s) {
         try {
-            //converting string to Bytes
+//converting string to Bytes
             byte[] byte_pubkey = Base64.getDecoder().decode(s);
             System.out.println("BYTE KEY::" + byte_pubkey);
 
@@ -319,6 +319,18 @@ public class SocketConnectionHandler implements Runnable {
             PublicKey public_key = (PublicKey) factory.generatePublic(new X509EncodedKeySpec(byte_pubkey));
             System.out.println("stringToPublicKey. !!!! FINAL OUTPUT" + public_key);
             return public_key;
+
+            /*
+
+
+
+
+            System.out.println("stringToPublicKey s = "+s);
+        X509EncodedKeySpec pubKeySpec = new X509EncodedKeySpec(Base64.getDecoder().decode(s));
+        KeyFactory keyFactory =KeyFactory.getInstance(
+                "RSA", "SUN");
+        PublicKey publicKey = keyFactory.generatePublic(pubKeySpec);
+        return  publicKey;*/
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -366,7 +378,6 @@ public class SocketConnectionHandler implements Runnable {
                         SocketServerEngine.getInstance().writeMsgSpecificClient(PortNo, Chat);
                         break;
                     case ChatMessage.PUBLICKEY:
-                        System.out.println("class.getClass().getSimpleName() " + message.getClass().getSimpleName());
                         //SocketServerEngine.getInstance().addNewClient(new Client("",message));
                         publicKey = this.stringToPublicKey(message);
                         System.out.println();
