@@ -167,6 +167,7 @@ public class ChatApplicationServerEngine
      */
     public static void main( String[] args )
     { 
+        
         String mode = getCommandLineArgPasswd( args );
         
         System.out.println( args[0] );

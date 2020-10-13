@@ -1,0 +1,26 @@
+{
+  "name": "ChatApplication-Server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "start": "ant && cd dist/ && concurrently \"java -jar ChatApplication-Server.jar Mode=Client\" \"java -jar ChatApplication-Server.jar Mode=Client\" \"java -jar ChatApplication-Server.jar Mode=Server\"" 
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jikol1906/Cryptoshit.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jikol1906/Cryptoshit/issues"
+  },
+  "homepage": "https://github.com/jikol1906/Cryptoshit#readme",
+  "description": "",
+  "devDependencies": {
+    "concurrently": "^5.3.0"
+  }
+}

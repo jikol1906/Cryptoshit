@@ -136,7 +136,7 @@ hs_err_pid*
 !.vscode/launch.json
 !.vscode/extensions.json
 *.code-workspace
-
+/node_modules
 /dist
 
 ### VisualStudioCode Patch ###
@@ -144,3 +144,4 @@ hs_err_pid*
 .history
 
 # End of https://www.toptal.com/developers/gitignore/api/java,visualstudiocode,intellij
+node_modules
