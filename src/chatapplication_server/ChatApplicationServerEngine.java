@@ -171,7 +171,6 @@ public class ChatApplicationServerEngine
         String mode = getCommandLineArgPasswd( args );
         
         System.out.println( args[0] );
-        System.out.println( "sefse" );
         System.out.println( mode );
         
         if ( mode.equals( "Server" ) )
